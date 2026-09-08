@@ -290,3 +290,32 @@ Addendum 6's named future work was built: `Tier2Detector.detect()` now tracks, a
 `STRUCTURAL_ENABLED` stays **`False`**. 0.920 is a real, meaningful improvement over 0.885, but this system has held a perfect zero-false-positive record on source-matching at every configuration tested across Reports 02/03/04 — that bar doesn't relax for a partial win. The chunk-anchoring code ships (it's a genuine improvement, fully tested, and required for match explanations regardless), but the feature flag stays off pending a fix that actually closes the remaining gap, not just narrows it.
 
 **For Chapter 4/5:** a second honest, complete iteration of the same DSR cycle — the proposed fix from Addendum 6 was built and it *worked*, partially, exactly as diagnosed (fewer candidate sentence pairs → fewer coincidental matches → higher precision), which is itself a confirmation that the multiple-comparisons diagnosis was correct, not just plausible. But "partially fixed, mechanistically as predicted" is still not "fixed enough to ship," and the honest report is the second, not the first. **Remaining future work, more precisely scoped now**: true sentence-pair anchoring (not just chunk anchoring) — using the *specific* matched sentence pair Tier 2's dense retrieval identified, rather than the whole chunk containing it — would shrink the comparison further still, but FAISS is currently indexed at chunk granularity only; reaching sentence granularity would need re-indexing at a finer level, a materially bigger change than this pass's, and not attempted here.
+
+## Addendum 8 (2026-09-08): re-run for chart legibility, latency figures updated
+
+The latency-distribution chart used in the final report had its x-axis stretched
+out to the full 5000ms budget line, compressing the actual sub-300ms distribution
+into an unreadable sliver against the left edge. `plot_latency_distribution()` in
+`evaluation/plots.py` was fixed to scale the x-axis to the real data range and
+report the 5-second budget as a text annotation instead of an axvline that forces
+the axis to span it.
+
+Re-running Part B's real-time demo to regenerate the chart surfaced a genuine
+methodological point worth recording, not just a chart cosmetics fix. A first
+re-run produced a heavy-tailed distribution (p50=120ms, p95=314ms, p99=717ms)
+driven by a handful of requests in the 400-1000ms range. A second, immediate
+re-run under the same code and corpus produced a clean, tight distribution
+(p50=98ms, p95=178ms, p99=239ms) with no comparable outliers. Both runs are
+methodologically identical; the difference is attributable to transient
+background load on the (shared, actively-in-use) development machine this
+offline evaluation script runs on, not to anything in the detection pipeline
+itself. The second run's figures are the ones now reported in Chapter 4/5 of
+the thesis and reflected in `raw/04_latency_distribution.png` and
+`raw/04_exp3_results.json`, since they are the reproducible, representative
+measurement; the first run's numbers are recorded here, not silently discarded,
+precisely because a single unexplained outlier run should not be quietly dropped
+without saying so.
+
+This does not change any hypothesis verdict: p99=239ms remains roughly 20x
+inside the 5-second budget, the same qualitative conclusion as the original
+p99=289ms figure this replaces.

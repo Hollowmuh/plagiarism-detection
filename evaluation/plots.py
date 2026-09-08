@@ -174,19 +174,31 @@ def plot_latency_distribution(
     p95_budget: float = 5000,
     save: bool = True,
 ) -> plt.Figure:
-    """Histogram of processing latency with p95 budget line."""
+    """Histogram of processing latency, x-axis scaled to the actual data
+    range rather than stretched out to the 5-second budget -- with p95 in
+    the tens to low hundreds of milliseconds, including a literal 5000ms
+    axvline compressed the entire histogram into a sliver at the left edge.
+    The budget is still reported, as a text annotation, without forcing the
+    axis to span it."""
     fig, ax = plt.subplots()
 
+    p95 = np.percentile(latencies_ms, 95)
+    p99 = np.percentile(latencies_ms, 99)
+    x_max = max(p99 * 1.25, latencies_ms.max() * 1.05)
+
     ax.hist(latencies_ms, bins=30, color="#1f77b4", alpha=0.7, edgecolor="black", linewidth=0.5)
-    ax.axvline(np.percentile(latencies_ms, 95), color="red", linestyle="--",
-               label=f"p95 = {np.percentile(latencies_ms, 95):.0f} ms")
-    ax.axvline(p95_budget, color="orange", linestyle=":",
-               label=f"Budget = {p95_budget:.0f} ms")
+    ax.axvline(p95, color="red", linestyle="--", label=f"p95 = {p95:.0f} ms")
+    ax.set_xlim(0, x_max)
 
     ax.set_xlabel("Latency (ms)")
     ax.set_ylabel("Count")
     ax.set_title("End-to-End Processing Latency")
-    ax.legend()
+    ax.legend(loc="upper right")
+    ax.text(0.98, 0.72,
+            f"5-second budget: {p95_budget:.0f} ms\n(off-scale; p95 is "
+            f"{p95_budget / p95:.0f}x inside it)",
+            transform=ax.transAxes, ha="right", va="top", fontsize=9,
+            bbox=dict(boxstyle="round", facecolor="#fff3cd", edgecolor="#d97706", alpha=0.9))
     plt.tight_layout()
 
     if save:
