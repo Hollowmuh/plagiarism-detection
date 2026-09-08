@@ -1,0 +1,117 @@
+{
+  "local_only": {
+    "f1": 0.7636363636363637,
+    "precision": 0.6774193548387096,
+    "recall": 0.875,
+    "f1_ci": [
+      0.6220512820512822,
+      0.8709677419354839
+    ],
+    "per_category_f1": {
+      "near_verbatim": 1.0,
+      "original": 0.0,
+      "paraphrased": 0.8235294117647058,
+      "verbatim": 1.0
+    },
+    "escalation_rate": 0.0,
+    "cost_per_1000": 0.0,
+    "latency_p50": 9.973262509447522,
+    "latency_p95": 17.419542816060126,
+    "latency_p99": 21.38016482902459
+  },
+  "cloud_only": {
+    "f1": 0.8135593220338984,
+    "precision": 0.6857142857142857,
+    "recall": 1.0,
+    "f1_ci": [
+      0.6808510638297872,
+      0.9090909090909091
+    ],
+    "per_category_f1": {
+      "near_verbatim": 1.0,
+      "original": 0.0,
+      "paraphrased": 1.0,
+      "verbatim": 1.0
+    },
+    "escalation_rate": 1.0,
+    "cost_per_1000": 0.09999999999999999,
+    "latency_p50": 125.69179899583105,
+    "latency_p95": 280.4375831547077,
+    "latency_p99": 285.3682405783911
+  },
+  "hybrid_static": {
+    "f1": 0.8135593220338984,
+    "precision": 0.6857142857142857,
+    "recall": 1.0,
+    "f1_ci": [
+      0.6808510638297872,
+      0.9090909090909091
+    ],
+    "per_category_f1": {
+      "near_verbatim": 1.0,
+      "original": 0.0,
+      "paraphrased": 1.0,
+      "verbatim": 1.0
+    },
+    "escalation_rate": 1.0,
+    "cost_per_1000": 0.09999999999999999,
+    "latency_p50": 135.99586651253048,
+    "latency_p95": 277.5418693025131,
+    "latency_p99": 297.1313618001296
+  },
+  "dual_tier": {
+    "f1": 0.8070175438596491,
+    "precision": 0.696969696969697,
+    "recall": 0.9583333333333334,
+    "f1_ci": [
+      0.679228436657682,
+      0.9032258064516129
+    ],
+    "per_category_f1": {
+      "near_verbatim": 1.0,
+      "original": 0.0,
+      "paraphrased": 0.9473684210526315,
+      "verbatim": 1.0
+    },
+    "escalation_rate": 0.15789473684210525,
+    "cost_per_1000": 0.015789473684210527,
+    "latency_p50": 12.277228495804593,
+    "latency_p95": 107.48852895630989,
+    "latency_p99": 118.16200725705134
+  },
+  "paired_tests_vs_dual_tier": {
+    "local_only": {
+      "t_stat": 1.4337208778404378,
+      "p_value": 0.16004928081560957,
+      "corrected_alpha": 0.016666666666666666,
+      "significant": false,
+      "diff_mean": 0.05263157894736842,
+      "diff_ci": [
+        0.0,
+        0.13157894736842105
+      ]
+    },
+    "cloud_only": {
+      "t_stat": 0.0,
+      "p_value": 1.0,
+      "corrected_alpha": 0.016666666666666666,
+      "significant": false,
+      "diff_mean": 0.0,
+      "diff_ci": [
+        -0.07894736842105263,
+        0.07894736842105263
+      ]
+    },
+    "hybrid_static": {
+      "t_stat": 0.0,
+      "p_value": 1.0,
+      "corrected_alpha": 0.016666666666666666,
+      "significant": false,
+      "diff_mean": 0.0,
+      "diff_ci": [
+        -0.07894736842105263,
+        0.07894736842105263
+      ]
+    }
+  }
+}

@@ -1,0 +1,238 @@
+x-backend-env: &backend-env
+  DATABASE_URL: postgresql+asyncpg://plagiarism:plagiarism@postgres:5432/plagiarism
+  DATABASE_URL_SYNC: postgresql://plagiarism:plagiarism@postgres:5432/plagiarism
+  REDIS_URL: redis://redis:6379/0
+  CELERY_BROKER_URL: redis://redis:6379/0
+  CELERY_RESULT_BACKEND: redis://redis:6379/1
+  API_SECRET_KEY: ${API_SECRET_KEY:-dev-secret-key-change-in-production}
+  UPLOAD_DIR: /data/uploads
+  FAISS_INDEX_PATH: /data/faiss/index.faiss
+  OMP_NUM_THREADS: "4"
+  MKL_NUM_THREADS: "4"
+  TOKENIZERS_PARALLELISM: "false"
+  SENTENCE_TRANSFORMERS_HOME: /data/models
+  HF_HOME: /data/models
+
+services:
+  # ── Infrastructure ──────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: plagiarism
+      POSTGRES_PASSWORD: plagiarism
+      POSTGRES_DB: plagiarism
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5438:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plagiarism"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6385:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Backend API ─────────────────────────────────────────────
+  api:
+    build: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2
+    ports:
+      - "8000:8000"
+    environment:
+      <<: *backend-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - upload_data:/data/uploads
+      - faiss_data:/data/faiss
+
+  # ── Celery Worker: extraction + detection + indexing ────────
+  # Solo pool (single-threaded) is deliberate, not a bottleneck to blindly
+  # remove: detection reads and indexing writes the shared in-process
+  # Winnowing/BM25/FAISS singletons, so that pair must stay serialized to
+  # guarantee submission N is fully indexed before submission N+1's
+  # detection runs. Extraction is *also* kept here rather than moved to
+  # the concurrent worker below: extraction's completion order is what
+  # decides the order submissions are dispatched into the detection
+  # queue, so parallelizing it would let a slower-to-extract submission
+  # get dispatched after a faster one that arrived later -- verified
+  # empirically (two near-simultaneous submissions, the second one's
+  # extraction finished first and its detection ran against an empty
+  # corpus, missing the first entirely). Keeping extraction serialized
+  # here preserves strict submission-order dispatch; it's cheap in the
+  # common case (~25-60ms for typical text) so this doesn't reintroduce
+  # a real bottleneck. Embedding is unused today but touches FAISS if
+  # ever wired up, so it stays on this serialized worker too.
+  celery-worker:
+    build: ./backend
+    command: >
+      celery -A app.tasks.celery_app worker
+      --loglevel=info
+      --queues=extraction,detection,indexing,embedding
+      --pool=solo
+      --hostname=detection-worker@%h
+    environment:
+      <<: *backend-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - upload_data:/data/uploads
+      - faiss_data:/data/faiss
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          # Capped 2026-07-04 alongside celery-worker-fast's cpus limit --
+          # solo-pool is naturally ~1 core in practice, but an explicit cap
+          # leaves real, guaranteed headroom on this 2-vCPU VM for the API
+          # process itself and Moodle/Postgres/Redis, rather than relying
+          # on the OS scheduler to arbitrate fairly under contention (which
+          # the Locust re-test showed it doesn't, by default).
+          cpus: "1.0"
+
+  # ── Celery Worker: AI-detection ──────────────────────────────
+  # AI-detection is the single largest and most variable latency cost
+  # (observed 150ms-4s+) and is the one task that's unambiguously safe
+  # to run with real concurrency: it never touches the shared
+  # cross-submission indices, never gates Submission.status, and has no
+  # ordering relationship to any other submission (each one's score is
+  # computed independently). Threads (not prefork) so the RoBERTa model
+  # loads once per process and is shared, not duplicated per worker.
+  # OMP/MKL threads are capped to 1 per task thread here so torch's own
+  # intra-op parallelism doesn't oversubscribe the VM's 2 vCPUs on top
+  # of task-level concurrency.
+  #
+  # concurrency=1 and cpus=0.75 (2026-07-04, post-audit capacity finding):
+  # a Locust re-run at 50 concurrent users found this worker at 94.56% CPU
+  # with a 507-task ai_detection backlog, and that contention was starving
+  # the API process enough to blow the 5s latency budget on plain
+  # submission POSTs (p99 11-15s) -- a real cost of the celery-worker
+  # split (Report 04 Addendum 2) that the *original* Locust run (Report
+  # 06) never saw, because it predates that split. Concurrency=2 wasn't
+  # load-bearing for the split's actual goal (decoupling AI-detection
+  # from the correctness-critical detection/indexing chain only requires
+  # a separate *process*, not extra threads within it) -- AI-detection is
+  # advisory-only and can tolerate being slower under load; the API path
+  # cannot. See evaluation/reports/06_testing_suite_results.md's
+  # 2026-07-04 addendum for the re-tested numbers.
+  celery-worker-fast:
+    build: ./backend
+    command: >
+      celery -A app.tasks.celery_app worker
+      --loglevel=info
+      --queues=ai_detection,default
+      --pool=threads
+      --concurrency=1
+      --hostname=fast-worker@%h
+    environment:
+      <<: *backend-env
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - upload_data:/data/uploads
+      - faiss_data:/data/faiss
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "0.75"
+
+  # ── Celery Beat (scheduled tasks) ──────────────────────────
+  celery-beat:
+    build: ./backend
+    command: celery -A app.tasks.celery_app beat --loglevel=info
+    environment:
+      <<: *backend-env
+    depends_on:
+      - celery-worker
+      - celery-worker-fast
+
+  # ── Flower (Celery monitoring) ──────────────────────────────
+  flower:
+    build: ./backend
+    command: celery -A app.tasks.celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    environment:
+      <<: *backend-env
+    depends_on:
+      - celery-worker
+
+  # ── Moodle LMS ─────────────────────────────────────────────
+  moodle-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: moodle
+      POSTGRES_PASSWORD: moodle
+      POSTGRES_DB: moodle
+    volumes:
+      - moodle_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U moodle"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  moodle:
+    image: ellakcy/moodle:latest
+    environment:
+      MOODLE_URL: "${MOODLE_URL:-http://localhost:8080}"
+      MOODLE_DB_TYPE: pgsql
+      MOODLE_DB_HOST: moodle-db
+      MOODLE_DB_PORT: "5432"
+      MOODLE_DB_USER: moodle
+      MOODLE_DB_PASSWORD: moodle
+      MOODLE_DB_NAME: moodle
+      MOODLE_ADMIN: admin
+      MOODLE_ADMIN_PASSWORD: Admin123!
+      MOODLE_ADMIN_EMAIL: admin@example.com
+    depends_on:
+      moodle-db:
+        condition: service_healthy
+    volumes:
+      - moodle_src:/usr/src/moodle
+      - moodle_data:/var/moodledata
+      - ./moodle-plugin/plagiarism/dualtier:/usr/src/moodle/plagiarism/dualtier
+
+  moodle-nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./moodle-nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - moodle_src:/usr/src/moodle:ro
+      - ./moodle-plugin/plagiarism/dualtier:/usr/src/moodle/plagiarism/dualtier:ro
+    depends_on:
+      - moodle
+
+volumes:
+  pgdata:
+  moodle_pgdata:
+  moodle_src:
+  moodle_data:
+  upload_data:
+  faiss_data:

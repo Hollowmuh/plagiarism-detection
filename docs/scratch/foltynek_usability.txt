@@ -1,0 +1,265 @@
+[h2] Usability results
+
+[p] The usability of the systems was evaluated using 23 objective criteria which were divided into three groups of criteria related to the system workflow process, the presentation of the results, and additional aspects. The points were assigned based on researcher findings during a specific period of the time.
+
+[h3] Workflow process usability
+
+[p] The first criteria group is related to the usability of the workflow process of using the systems. It was evaluated using the following questions:
+
+[p] Is it possible to upload and test multiple documents at the same time?
+
+[p] Does the system ask to fill in metadata for documents?
+
+[p] Does the system use original file names for the report?
+
+[p] Is there any word limit for the document testing?
+
+[p] Does the system display text in the chosen language only?
+
+[p] Can the system process large documents (for example, a bachelor thesis)?
+
+[p] The results are summarized in Table 9. With respect to the workflow process, five systems were assigned the highest score in this category. The scores of only five systems were equal to or less than 3. Moreover, the most supported features are the processing of large documents (13 systems), as well as displaying text in the chosen language and having no word limits (12 systems). Uploading multiple documents is a less supported feature, which is unfortunate, as it is very important for educational institutions to be able to test several documents at the same time.
+
+[h3] Result presentation usability
+
+[p] The presentation and understandability of the results reported by the systems were evaluated in a second usability criteria group. Since the systems cannot determine plagiarism, the results must be examined by one or more persons in order to determine if plagiarism is present and a sanction warranted. It must be necessary to download the result reports and to be able to locate them again in the system. Some systems rename the documents, assigning internal numbering to them, which makes it extremely difficult to find the report again. Many systems have different formats for online and downloadable reports. It would be useful for the report review if the system kept the original formatting and page numbers of the document being analyzed in order to ease the load of evaluation.
+
+[p] It is assumed that the vast majority of the universities require that the evidence of found similarities be documented in the report so that they can be printed out for a student’s permanent record. This evidence is examined by other members of the committee, who may not have access to the system at a disciplinary hearing.
+
+[p] The results related to the presentation group are summarized in Table 10 and all criteria are listed below:
+
+[p] Reports are downloadable.
+
+[p] Results are saved in the user’s account and can be reviewed afterwards.
+
+[p] Matched passages are highlighted in the online report.
+
+[p] Matched passages are highlighted in the downloaded report (offline).
+
+[p] Evidence of similarity is demonstrated side-by-side with the source in the online report.
+
+[p] Evidence of similarity is demonstrated side-by-side with the source in the downloaded report.
+
+[p] Document formatting is not changed in the report.
+
+[p] Document page numbers are shown in the report.
+
+[p] The report is not spoiled by false positives.
+
+[p] None of the systems was able to get the highest score in the usability group related to the test results. Two systems (PlagScan and Urkund) support almost all features, but six systems support half or fewer features. The most supported features are the possibility to download result reports and highlighting matched passages in the online report. Less supported features are a side-by-side demonstration of evidence in the downloaded report and in the online report, as well as keeping document formatting.
+
+[h3] Other usability aspects
+
+[p] Besides the workflow process and the result presentation, there are also other system usability aspects worth evaluating, specifically:
+
+[p] System costs are clearly stated in the system homepage.
+
+[p] Information about a free system trial version is advertised on the webpage.
+
+[p] The system can be integrated as an API to a learning management system.
+
+[p] The system can be integrated with the Moodle platform.
+
+[p] The system provides call support.
+
+[p] The call support is provided in English.
+
+[p] English is properly used on the website and reports.
+
+[p] There are no external advertisements.
+
+[p] In order to test the call support, telephone numbers were called from a German university telephone during normal European working hours (9:00–17:00 CET/GMT + 1). A checklist (Weber-Wulff, 2019) was used to guide the conversation if anyone answered the phone. English was used as the language of communication, even when calling German companies. For intihal.net, the call was not answered, but an hour later the call was returned. StrikePlagiarism.org did not speak English, but organized someone who did. He refused, however, to give information in English and insisted that email support be used. Plagiarism Software publishes a number in Saudia Arabia, but returned the call from a Pakistani number. PlagAware only has an answering machine taking calls, but will respond to emails. The woman answering the Turnitin number kept repeating that all information was found on the web pages and insisted that since this was not a customer calling, that the sales department be contacted. Each of these systems was awarded half a point. Akademia published a wrong number on their web page as far as could be discerned, as the person answering the phone only spoke a foreign language. In case we did not reach anyone via phone and thus we could not assess their ability to speak English, we assigned 0 points for this criterion.
+
+[p] As shown in Table 11, only PlagiarismCheck.org and Unicheck fulfilled all criteria. Five systems were only able to support less than half of the defined features. The most supported features were no grammatical mistakes seen and no external advertisements. Problematic areas are not stating the system costs clearly, unclear possible integration with Moodle, and the lack of provision of call support in English.
+
+[h2] Discussion
+
+[p] In the majority of the previous research on testing of text-matching tools, the main focus has been on coverage. The problem with most of these studies is that they approach coverage from only one perspective. They only aim at measuring the overall coverage performance of the detection tools, whereas the present study approaches coverage from four perspectives: language-based coverage, language subgroup-based coverage, source-based coverage, and disguising technique-based coverage. This study also includes a usability evaluation.
+
+[p] It must be noted that both the coverage and the usability scores are based on work that was done with potentially older versions of the systems. Many companies have responded to say that they now are able to deal with various issues. This is good, but we can only report on what we saw when we evaluated the systems. If any part of the evaluation was to be repeated, it would have to be repeated for all systems. It should be noted that similar responses have come from vendors for all of Weber-Wulff’s tests, such as (Weber-Wulff et al., 2013).
+
+[p] It must be also noted that selection of usability criteria and their weights reflect personal experience of the project team. We are fully aware that different institutions may have different priorities. To mitigate this limitation, we have published all usability scores, allowing for calculations using individual weights.
+
+[h3] Language-based coverage
+
+[p] With respect only to the language-based coverage, the performance of the tools for eight languages was evaluated in order to determine which tools yield the best results for each particular language. The results showed that best-performing tools with respect only to coverage are (three systems tied for Italian):
+
+[p] PlagAware for German,
+
+[p] PlagScan for English, Italian,
+
+[p] PlagiarismCheck.org for Italian, Latvian,
+
+[p] Strikeplagiarism.com for Czech, Italian and
+
+[p] Urkund for Slovak, Spanish, and Turkish.
+
+[p] It is worth noting that, in an overall sense, the text-matching tools tested yield better results for widely spoken languages. In the literature, language-based similarity detection mainly revolves around identifying plagiarism among documents in different languages. No study, to our knowledge, has been conducted specifically on the coverage of multiple languages. In this respect, these findings offer valuable insights to the readers. As for the language subgroups, the tested text-matching tools work best for Germanic languages and Romanic languages while results are not satisfactory for Slavic languages.
+
+[h3] Source-based coverage testing
+
+[p] Source-based coverage testing was made using four types of sources; Wikipedia, open access papers, a student thesis and online articles. For many students, Wikipedia is the starting point for research (Howard & Davies, 2009), and thus can be regarded as one of the primary sources for plagiarists. Since a Wikipedia database is freely available, it is expected that Wikipedia texts should easily be identifiable. Testing the tools with Wikipedia texts demonstrates the fundamental ability to catch text matches.
+
+[p] Three articles per language were created, each of which was made using a different disguising technique (copy & paste, synonym replacement and manual paraphrase) for all eight languages. The best performing tools for the sources tested over all languages were
+
+[p] PlagiarismCheck.org for online articles,
+
+[p] StrikePlagiarism.com for the student thesis (although this may be because the student thesis was in Czech),
+
+[p] Turnitin for open-access papers and
+
+[p] Urkund for Wikipedia
+
+[p] Since Wikipedia is assumed to be a widely used source, it was worth investigating Wikipedia texts deeper. The results revealed that the majority of tools are successful at detecting similarity with copy & paste from Wikipedia texts, except for Intihal.net, DPV and Dupli Checker respectively. However, a considerable drop was observed in synonym replacement texts in all systems, except for Urkund, PlagiarismCheck.org and Turnitin. Unlike other systems, Urkund, PlagiarismCheck.org and Turnitin yielded promising results in synonym replacement texts. This replicates the result of the study of Weber-Wulff et al. (2013), in which Urkund and Turnitin were found to have the best results among 16 tools.
+
+[p] As for the paraphrased texts, all systems fell short in catching similarity at a satisfactory level. PlagiarismCheck.org was the best performing tool in paraphrased texts compiled from Wikipedia. Overall, Urkund was the best performing tool at catching similarity in Wikipedia texts created by all three disguising techniques.
+
+[p] One aspect of Wikipedia sources that is not adequately addressed by the text-matching software systems is the proliferation of Wikipedia copies on the internet. As discussed in Weber-Wulff et al. (2013), this can lead to the appearance of many smallish text matches instead of one large one. In particular, this can happen if the copy of the ever-changing Wikipedia in the database of the software system is relatively old and the copies on the internet are from newer versions. A careless teacher may draw false conclusions if they focus only on the quantity of Wikipedia similarities in the report.
+
+[h3] Disguising technique-based coverage
+
+[p] The next dimension of coverage testing is disguising technique-based coverage. In this phase, documents were created using copy & paste, synonym replacement, paraphrase, and translation techniques. In copy & paste documents, all systems achieved acceptable results except DPV, intihal.net and Dupli Checker. Urkund was the best tool at catching similarity in copy & paste texts. The success of some of the tools tested in catching similarity in copy & paste texts has also been validated by other studies such as Turnitin (Bull et al., 2001; Kakkonen & Mozgovoy, 2010; Maurer et al., 2006; Vani & Gupta, 2016) and Docol©c (Maurer et al., 2006).
+
+[p] For synonym replacement texts, the best-performing tools from copy & paste texts continued their success with a slight decline in scores, except for PlagiarismCheck.org which yielded better results in synonym replacement texts than copy & paste texts. Plagiarism Software and Viper showed the sharpest decline in their scores for synonym replacement. Urkund and PlagiarismCheck.org were the best tools in this category.
+
+[p] For paraphrased texts, none of the systems was able to provide satisfactory results. However, PlagiarismCheck.org, Urkund, PlagScan and Turnitin scored somewhat better than the other systems. PlagScan (Křížková et al., 2016) and Turnitin (Bull et al., 2001) also scored well in paraphrased texts in some studies.
+
+[p] In translated texts, all the systems were unable to detect translation plagiarism, with the exception of Akademia. This system allows users an option to check for potential translation plagiarism. The systems detected translation plagiarism mainly in the references, not in the texts. This is similar to the previous research findings and has not been improved since then. For example, Turnitin and Docol©c have previously been shown not to be efficient in detecting translation plagiarism (Maurer et al., 2006). To increase the chances of detecting translation plagiarism, paying extra attention to the matches with the reference entries should be encouraged since matches from the same source can be a significant indicator of translation plagiarism. However, it should be noted that some systems may omit matches with the reference entries by default.
+
+[h3] Multi-source coverage testing
+
+[p] In the last phase of coverage testing, we tested the ability of systems to detect similarity in the documents that are compiled from multiple sources. It is assumed that plagiarised articles contain text taken from multiple sources (Sorokina, Gehrke, Warner, & Ginsparg, 2006). This type of plagiarism requires additional effort to identify. If a system is able to find all similarity in documents which are compiled from multiple sources, this is a significant indicator of its coverage performance.
+
+[p] The multi-source results show that Urkund, the best performing system in single-source documents, shares the top score with PlagAware in multi-source documents, while Dupli Checker, DPV and intihal.net yielded very unsatisfactory results. Surprisingly, only the performance of two systems (Akademia and Unicheck) demonstrated a sharp decline in multi-source documents whereas the performance of ten systems actually improved for multi-source documents. This shows that the systems perform better in catching short fragments in a multi-source text rather than the whole document taken from a single source.
+
+[p] As for the general testing, the results are highly consistent with the Wikipedia results which contributes the validity of the single-source and multi-source testing. Again, in single-source documents, Urkund obtained the highest score, while PlagAware is the best performing system in multi-source documents. Dupli Checker, DPV and intihal.net obtained the least scores in both categories. Most of the systems demonstrated better performance for multi-source documents than for single-source ones. This is most probably explained by the chances the systems had for having access to a source. If one source was missing in the tool’s database, it had no chance to identify the text match. The use of multiple sources gave the tools multiple chances of identifying at least one of the sources. This points out quite clearly the issue of false negatives: even if a text-matching tool does not identify a source, the text can still be plagiarized.
+
+[h3] Overall coverage performance
+
+[p] Based on the total coverage performance, calculated as an average of the scores for each testing document, we can divide the systems into four categories (sorted alphabetically within each category) based on their overall placement on a scale of 0 (worst) to 5 (best).
+
+[p] Useful systems - the overall score in [3.75–5.0]:
+
+[p] There were no systems in this category
+
+[p] Partially useful systems - the overall score in [2.5–3.75):
+
+[p] PlagAware, PlagScan, StrikePlagiarism.com, Turnitin, Urkund
+
+[p] Marginally useful systems - the overall score in [1.25–2.5):
+
+[p] Akademia, Copyscape, Docol©c, PlagiarismCheck.org, Plagiarism Software, Unicheck, Viper
+
+[p] Unsuited for academic institutions - the overall score in [0–1.25):
+
+[p] Dupli Checker, DPV, intihal.net
+
+[h3] Usability
+
+[p] The second evaluation focus of the present study is on usability. The results can be interpreted in two ways, either in a system-based perspective or a feature-based one, since some users may prioritize a particular feature over others. For the system-based usability evaluation, Docol©c, DPV, PlagScan, Unicheck, and Urkund were able to meet all of the specified criteria. PlagiarismCheck.org, Turnitin, and Viper were missing only one criterion (PlagiarismCheck.org dropped the original file names and both Turnitin and Viper insisted on much metadata being filled in).
+
+[p] In the feature-based perspective, the ability to process large documents, no word limitations, and using only in the chosen language were the features most supported by the systems. Unfortunately, the uploading of multiple documents at the same time was the least supported feature. This is odd, because it is an essential feature for academic institutions.
+
+[p] A similar usability evaluation was conducted by Weber-Wulff et al. (2013). In this study, they created a 27-item usability checklist and evaluated the usability of 16 systems. Their checklist includes similar criteria of the present study such as storing reports, side-by-side views, or effective support service. The two studies have eight systems in common. In the study of Weber-Wulff et al. (2013), the top three systems were Turnitin, PlagAware, and StrikePlagiarism.com while in the present study Urkund, StrikePlagiarism, and Turnitin are the best scorers. Copyscape, Dupli Checker, and Docol©c were the worst scoring systems in both studies.
+
+[p] Another similar study (Bull et al., 2001) addressed the usability of five systems including Turnitin. For usability, the researchers set some criteria and evaluated the systems based on these criteria by assigning stars out of five. As a result of the evaluation, Turnitin was given five stars for the clarity of reports, five stars for user-friendliness, five stars for the layout of reports and four stars for easy-to-interpret criteria.
+
+[p] The similarity reports are the end products of the testing process and serve as crucial evidence for decision makers such as honour boards or disciplinary committees. Since affected students may decide to ask courts to evaluate the decision, it is necessary for there to be clear evidence, presented with the offending text and a potential source presented in a synoptic (side-by-side) style, and including metadata such as page numbers to ease verifiability. Thus, the similarity reports generated were the focus of the usability evaluation.
+
+[p] However, none of the systems managed to meet all of the stated criteria. PlagScan (no side-by-side layout in the offline report) and Urkund (did not keep the document formatting) scored seven out of eight points. They were closely followed by Turnitin and Unicheck which missed two criteria (no side-by-side layout in online or offline reports).
+
+[p] The features supported most were downloadable reports and some sort of highlighting of the text match in the online reports. Two systems, Dupli Checker and Copyscape, do not provide downloadable reports to the users. The side-by-side layout was the least supported feature. While four systems offer side-by-side evidence in their online reports, only one system (Urkund) supports this feature in the offline report. It can be argued that the side-by-side layout is an effective way to make a contrastive analysis in deciding whether a text match can be considered plagiarism or not, but this feature is not supported by most of the systems.
+
+[p] Along with the uploading process and the understandability of reports, we also aimed to address certain features that would be useful in academia. Eight criteria were included in this area:
+
+[p] clearly stated costs,
+
+[p] the offer of a free trial,
+
+[p] integration to an LMS (Learning Management System) via API,
+
+[p] Moodle integration (as this is a very popular LMS),
+
+[p] availability of support by telephone during normal European working hours (9–15),
+
+[p] availability of support by telephone in English,
+
+[p] proper English usage on the website and in the reports, and
+
+[p] no advertisements for other products or companies.
+
+[p] The qualitative analysis in this area showed that only PlagiarismCheck.org and Unicheck were able to achieve a top score. PlagScan scored seven points out of eight and was followed by PlagAware (6.5 points), StrikePlagiarism.com (6.5 points), Docol©c and Urkund (6 points). Akademia (2 points), DPV (2 points), Dupli Checker (3 points), intihal.net (3 points) and Viper (3 points) did not obtain satisfactory results.
+
+[p] Proper English usage was the most supported feature in this category, followed by no external advertisements. The least supported feature was clearly stated system costs, only six systems fulfilled this criterion. While it is understandable that a company wants to be able to charge as much as they can get from a customer, it is in the interests of the customer to be able to compare the total cost of use per year up front before diving into extensive tests.
+
+[p] In order to calculate the overall usability score, the categories were ranked based on their impact on usability. In this respect, the interpretation of the reports was considered to have the most impact on usability, since similarity reports can be highly misleading (also noted by Razı, 2015) when they are not clear enough or have inadequate features. Thus, the scores from this category were weighted threefold. The workflow process criteria were weighted twofold and the other criteria were weighted by one. The maximum weighted score was thus 47. Based on these numbers, we classified the systems into three categories (the boundaries for these categories were 35, 23, and 11:
+
+[p] Useful systems: Docol©c, PlagScan, Turnitin, Unicheck, Urkund;
+
+[p] Partially useful systems: DPV, PlagAware, PlagiarismCheck.org, StrikePlagiarism.com, Viper;
+
+[p] Marginally useful systems: Akademia, Dupli Checker, Copyscape, intihal.net, Plagiarism Software.
+
+[p] Unsuited for academic institutions: -
+
+[p] Please note that these categories are quite subjective, as our evaluation criteria are subjective and the weightings as well. For other use cases, the criteria might be different.
+
+[h3] Combined coverage
+
+[p] If the results for coverage and usability are combined on a two-dimensional graph, Fig. 1 emerges. In this section, the details of the coverage and usability are discussed.
+
+[p] Coverage and Usability combined. X-axis: Total score for coverage; Y-axis: Total weighted score for usability
+
+[p] Coverage is the primary limitation of a web-based text-matching tool (McKeever, 2006) and the usability of such a system has a decisive influence on the system users (Liu, Lo, & Wang, 2013). Therefore, Fig. 1 presents a clear portrayal of the overall effectiveness of the systems. Having determined their criteria related to the coverage and usability of a web-based text-matching tool, clients can decide which system works best in their settings. Vendors are given an idea about the overall effectiveness of their systems among the tools tested. This diagram presents an initial blueprint for vendors to improve their systems and the direction of improvement.
+
+[p] One important result that can be seen in this diagram is that the usability performance of the systems is relatively better than their coverage performance (see Fig. 1). As for coverage, the systems demonstrated at best only average performance. Thus, it has been shown that the systems tested fall short in meeting the coverage expectations. They are useful in the sense that they find some text similarity that can be considered plagiarism, but they do not find all such text similarity and they also suffer from false positives.
+
+[h2] Conclusions and recommendations
+
+[p] This study is the output of an intensive two-year collaboration and systematic effort of scholars from a number of different European countries. Despite the lack of external funding, the enthusiasm-driven team performed a comprehensive test of web-based text-matching tools with the aim to offer valuable insights to academia, policymakers, users, and vendors. Our results reflect the state of the art of text-matching tools between November 2018 and November 2019. Testing of the text-matching tools is not a new endeavour, however, previous studies generally have fallen short in providing satisfactory results. This study tries to overcome the problems and shortcomings of previous efforts. It compares 15 tools using two main criteria (coverage and usability), analyzing testing documents in eight languages, compiled from several sources, and using various disguising techniques.
+
+[p] A summary of the most important findings includes the following points:
+
+[p] Some systems work better for a particular language or language family. Coverage of sources written in major languages (English, German, and Spanish) is in general much better than coverage of minor language sources (Czech or Slovak).
+
+[p] The systems’ performance varies according to the source of the plagiarized text. For instance, most systems are good at finding similarity to current Wikipedia texts, but not as good for open access papers, theses, or online articles.
+
+[p] The performance of the systems is also different depending on the disguising technique used. The performance is only partially satisfactory in synonym replacement and quite unsatisfactory for paraphrased and translated texts. Considering that patchwriting, which includes synonym replacement and sentence re-arranging, is a common technique used by students, vendors should work to improve this shortcoming.
+
+[p] The systems appear to be better at catching similarity in multi-source documents than single-source ones, although the test material was presented in blocks and not mixed on a sentence-by-sentence level.
+
+[p] As for the usability perspective, this study clearly shows how important the similarity reports and how user-friendly the testing process of the systems are. The users can see which features are supported by the systems and which are not. Also, vendors can benchmark their features with other systems.
+
+[p] Based on our results, we offer the following recommendations for the improvement of the systems, although we realize that some of these are computationally impossible:
+
+[p] Detect more types of plagiarism, particularly those coming from synonym replacement, translation, or paraphrase. Some semantic analysis results look promising, although their use will increase the amount of time needed for evaluating a system.
+
+[p] Clearly identify the source location in the report, do not just report “Internet source” or “Wikipedia”, but specify the exact URL and date stored so that an independent comparison can be done.
+
+[p] Clearly identify the original sources of plagiarism when a text has been found similar to a number of different sources. For example, if Wikipedia and another page that has copied or used text from Wikipedia turn up as potential sources, the system should show both as possible sources of plagiarism, prioritizing showing Wikipedia first because it is more likely to be the real source of plagiarism. Once Wikipedia has been determined as a potential source, this particular article should be closely compared to see if there is more from this source.
+
+[p] Avoid asking users to enter metadata (for example, author, title, and/or subject) in the system along with the text or file as mandatory information. It is good to have this feature available, but it should not be mandatory.
+
+[p] Lose the single number that purports to identify the amount of similarity. It does not, and it is misused by institutions as a decision maker. Plagiarism is multi-dimensional and must be judged by an expert, not a machine. For example, a system could report the number of word match sequences found, the longest one, the average length of sequences, the number of apparent synonym substitutions, etc.
+
+[p] Design useful reports and documentation. They must be readable and understandable both online and printed as a PDF. Special care should be taken with printed forms, as they will become part of a student’s permanent record. It must show users the suspected text match side-by-side with the possible sources of plagiarism, highlighting the text that appears similar.
+
+[p] Distinguish false positives from real plagiarism. Many of these false positives occur due to commonly used phrases within the context or language employed, or ignoring variant quotation styles (German or French quotation marks or indentation).
+
+[p] A number of important points for educators need to be emphasized:
+
+[p] Despite the systems being able to find a good bit of text overlap, they do not determine plagiarism. There is a prevalent misconception about these tools. In the literature, most of the studies use the term ‘plagiarism detection tools’. However, plagiarism and similarity are very different concepts. What these tools promise is to find overlapping texts in the document examined. Overlapping texts do not always indicate plagiarism, thus the decision about whether plagiarism is present or not should never be taken on the basis of a similarity percentage. The similarity reports of these tools must be inspected by an experienced human being, such as a teacher or an academic, because all systems suffer from false positives (correctly quoted material counted as similarity) and false negatives (potential sources were not found).
+
+[p] Translation plagiarism can sometimes be found by a number of matches in references.
+
+[p] Another problem related to these tools is the risk of their possible cooperation with essay mills; this is because technically a company can store uploaded documents and share them with third parties. In the ‘Terms and Conditions’ sections of some tools, this notion is clearly stated. Uploading documents to such websites can cause a violation of ethics and laws, and teachers may end up with legal consequences. Thus, users must be skeptical about the credibility of the tools before uploading any documents to retrieve a similarity report.
+
+[p] It is necessary to obtain the legal consent of students before uploading their work to third parties. Since this legal situation can be different from country to country or even from university to university, make sure that the relevant norms are being respected before using such systems.
+
+[p] Because of European data privacy laws, for higher education institutions in the EU it must be certain that the companies are only using servers in the EU if they are storing material.
+
+[p] Teachers must make sure that they do not violate a non-disclosure agreement by uploading student work to the text-matching software.
+
+[p] Detecting plagiarism happens far too late in the writing process. It is necessary to institute institution-wide efforts to prevent academic misconduct and to develop a culture of excellence and academic integrity. This encourages genuine learning and shows how academic communication can be done right, instead of focusing on policing and sanctioning.
+
+[p] Considering both the number of participating systems and the number of testing documents and language variety, this paper describes the largest testing which has ever been conducted. We hope the results will be useful both for educators and for policymakers who decide which system to use at their institution. We plan to repeat the test in 3 years to see if any improvements can be seen.

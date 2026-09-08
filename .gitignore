@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml
+
+# Data
+*.faiss
+*.index
+backend/data/
+evaluation/dataset/data/submissions/*
+evaluation/dataset/data/sources/*
+!evaluation/dataset/data/submissions/.gitkeep
+!evaluation/dataset/data/sources/.gitkeep
+
+# Alembic
+backend/alembic/versions/*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code session state (not project code)
+.claude/
+
+# Logs
+*.log
+logs/
+
+# Test / Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Model cache
+.cache/
+models/

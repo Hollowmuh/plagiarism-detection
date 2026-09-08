@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="plagiarism/dualtier/db" VERSION="2026051500" COMMENT="Dual-tier plagiarism detection plugin tables">
+  <TABLES>
+
+    <TABLE NAME="plagiarism_dualtier_files" COMMENT="Tracks files submitted for plagiarism detection">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Course module ID"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Moodle user ID"/>
+        <FIELD NAME="identifier" TYPE="char" LENGTH="64" NOTNULL="true" COMMENT="Content hash (SHA-256)"/>
+        <FIELD NAME="filename" TYPE="char" LENGTH="255" NOTNULL="false" COMMENT="Original filename"/>
+        <FIELD NAME="externalid" TYPE="char" LENGTH="64" NOTNULL="false" COMMENT="FastAPI submission UUID"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="pending" COMMENT="pending|submitted|complete|error"/>
+        <FIELD NAME="similarityscore" TYPE="number" LENGTH="5" DECIMALS="4" NOTNULL="false" COMMENT="0.0000 to 1.0000"/>
+        <FIELD NAME="tier_resolved" TYPE="char" LENGTH="10" NOTNULL="false" COMMENT="tier1 or tier2"/>
+        <FIELD NAME="is_plagiarised" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" COMMENT="Boolean flag"/>
+        <FIELD NAME="reportdata" TYPE="text" NOTNULL="false" COMMENT="Cached JSON report from backend"/>
+        <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" COMMENT="Error details if status=error"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_cmid_userid" UNIQUE="false" FIELDS="cmid, userid"/>
+        <INDEX NAME="ix_externalid" UNIQUE="false" FIELDS="externalid"/>
+        <INDEX NAME="ix_status" UNIQUE="false" FIELDS="status"/>
+      </INDEXES>
+    </TABLE>
+
+    <TABLE NAME="plagiarism_dualtier_config" COMMENT="Per-module plagiarism detection configuration">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="Course module ID"/>
+        <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_cmid" UNIQUE="true" FIELDS="cmid"/>
+      </INDEXES>
+    </TABLE>
+
+  </TABLES>
+</XMLDB>

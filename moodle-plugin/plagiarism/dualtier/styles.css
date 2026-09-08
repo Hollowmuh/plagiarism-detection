@@ -1,0 +1,442 @@
+/* Dual-Tier Plagiarism Detection Plugin — visual design system */
+
+.dualtier-report,
+.plagiarism-dualtier-badge,
+.plagiarism-dualtier-disclosure {
+    --dt-green: #16a34a;
+    --dt-green-bg: #ecfdf3;
+    --dt-orange: #d97706;
+    --dt-orange-bg: #fffaeb;
+    --dt-red: #dc2626;
+    --dt-red-bg: #fef2f2;
+    --dt-gray: #6b7280;
+    --dt-gray-bg: #f3f4f6;
+    --dt-indigo: #4f46e5;
+    --dt-indigo-bg: #eef2ff;
+    --dt-purple: #7c3aed;
+    --dt-purple-bg: #f5f3ff;
+    --dt-ink: #111827;
+    --dt-ink-soft: #4b5563;
+    --dt-border: #e5e7eb;
+    --dt-card-bg: #ffffff;
+    --dt-page-bg: #f9fafb;
+    --dt-radius: 12px;
+    --dt-radius-sm: 8px;
+    --dt-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --dt-shadow-md: 0 4px 8px -2px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.05);
+    --dt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ── Badges (assignment / grading table) ─────────────────────── */
+
+.plagiarism-dualtier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 11px;
+    border-radius: 999px;
+    font-family: var(--dt-font);
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    line-height: 1.6;
+    border: 1px solid transparent;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.plagiarism-dualtier-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+}
+
+.plagiarism-dualtier-badge:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: var(--dt-shadow);
+}
+
+.dualtier-green {
+    background-color: var(--dt-green-bg);
+    color: var(--dt-green);
+    border-color: rgba(22, 163, 74, 0.18);
+}
+
+.dualtier-orange {
+    background-color: var(--dt-orange-bg);
+    color: var(--dt-orange);
+    border-color: rgba(217, 119, 6, 0.2);
+}
+
+.dualtier-red {
+    background-color: var(--dt-red-bg);
+    color: var(--dt-red);
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+.dualtier-pending {
+    background-color: var(--dt-gray-bg);
+    color: var(--dt-gray);
+    font-style: italic;
+}
+
+.dualtier-pending::before {
+    animation: dualtier-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dualtier-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+}
+
+.dualtier-error {
+    background-color: var(--dt-gray-bg);
+    color: var(--dt-gray);
+}
+
+/* AI-authorship badge: deliberately a distinct color family (indigo/purple)
+   from the green/orange/red similarity badges above, since this is an
+   independent, advisory-only signal and must never look like a severity
+   level on the same scale as the plagiarism score. */
+.dualtier-ai-badge {
+    margin-left: 2px;
+}
+
+.dualtier-ai-human {
+    background-color: var(--dt-gray-bg);
+    color: var(--dt-gray);
+}
+
+.dualtier-ai-uncertain {
+    background-color: var(--dt-purple-bg);
+    color: var(--dt-purple);
+    border-color: rgba(124, 58, 237, 0.2);
+}
+
+.dualtier-ai-likely {
+    background-color: var(--dt-indigo-bg);
+    color: var(--dt-indigo);
+    border-color: rgba(79, 70, 229, 0.2);
+}
+
+/* ── Report page shell ───────────────────────────────────────── */
+
+.dualtier-report {
+    max-width: 880px;
+    margin: 0 auto;
+    font-family: var(--dt-font);
+    color: var(--dt-ink);
+}
+
+.dualtier-card {
+    background: var(--dt-card-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: var(--dt-radius);
+    box-shadow: var(--dt-shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.dualtier-card-title {
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--dt-ink-soft);
+    margin: 0 0 16px;
+}
+
+/* ── Hero: score gauge + verdict ─────────────────────────────── */
+
+.dualtier-hero {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--dt-page-bg) 100%);
+}
+
+.dualtier-gauge {
+    --pct: 0;
+    --gauge-color: var(--dt-gray);
+    flex: none;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gauge-color) calc(var(--pct) * 1%), var(--dt-gray-bg) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.dualtier-gauge::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: var(--dt-card-bg);
+}
+
+.dualtier-gauge-value {
+    position: relative;
+    z-index: 1;
+    font-size: 1.5em;
+    font-weight: 800;
+    color: var(--dt-ink);
+    line-height: 1;
+}
+
+.dualtier-gauge-value small {
+    display: block;
+    font-size: 0.36em;
+    font-weight: 700;
+    color: var(--dt-ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+}
+
+.dualtier-hero-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.dualtier-hero-title {
+    margin: 0 0 6px;
+    font-size: 1.15em;
+    font-weight: 800;
+}
+
+.dualtier-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.dualtier-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8em;
+    font-weight: 700;
+    background: var(--dt-gray-bg);
+    color: var(--dt-ink-soft);
+}
+
+.dualtier-pill-verdict-yes {
+    background: var(--dt-red-bg);
+    color: var(--dt-red);
+}
+
+.dualtier-pill-verdict-no {
+    background: var(--dt-green-bg);
+    color: var(--dt-green);
+}
+
+.dualtier-filename {
+    margin: 10px 0 0;
+    font-size: 0.85em;
+    color: var(--dt-ink-soft);
+    word-break: break-word;
+}
+
+/* ── Stat grid (tier scores / escalation / timing) ───────────── */
+
+.dualtier-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+}
+
+.dualtier-stat {
+    background: var(--dt-page-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: var(--dt-radius-sm);
+    padding: 14px 16px;
+}
+
+.dualtier-stat-label {
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--dt-ink-soft);
+    margin: 0 0 6px;
+}
+
+.dualtier-stat-value {
+    font-size: 1.25em;
+    font-weight: 800;
+    color: var(--dt-ink);
+}
+
+/* Legacy table classes kept as fallback selectors, restyled to match. */
+.dualtier-summary-table,
+.dualtier-scores-table,
+.dualtier-ai-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dualtier-summary-table td,
+.dualtier-scores-table td,
+.dualtier-ai-table td {
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.dualtier-summary-table td:first-child,
+.dualtier-scores-table td:first-child,
+.dualtier-ai-table td:first-child {
+    font-weight: 700;
+    width: 220px;
+    color: var(--dt-ink-soft);
+}
+
+/* ── AI-authorship section ───────────────────────────────────── */
+
+.dualtier-ai-score-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dualtier-ai-score-value {
+    font-size: 2em;
+    font-weight: 800;
+    color: var(--dt-indigo);
+}
+
+.dualtier-ai-disclaimer {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: #5b21b6;
+    background: var(--dt-purple-bg);
+    border: 1px solid rgba(124, 58, 237, 0.18);
+    border-radius: var(--dt-radius-sm);
+    padding: 12px 14px;
+    margin-top: 4px;
+}
+
+.dualtier-ai-disclaimer::before {
+    content: "\24D8"; /* circled Latin small letter i */
+    font-weight: 800;
+    font-size: 1.1em;
+    color: var(--dt-purple);
+    flex: none;
+    line-height: 1.3;
+}
+
+/* ── Matched passages ─────────────────────────────────────────── */
+
+.dualtier-match {
+    margin-bottom: 20px;
+}
+
+.dualtier-match:last-child {
+    margin-bottom: 0;
+}
+
+.dualtier-match-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.dualtier-match-header h4 {
+    margin: 0;
+    font-size: 0.95em;
+    font-weight: 700;
+}
+
+.dualtier-match-score {
+    font-size: 0.75em;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--dt-red-bg);
+    color: var(--dt-red);
+    white-space: nowrap;
+}
+
+.dualtier-comparison {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.dualtier-side {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: var(--dt-radius-sm);
+    background: var(--dt-page-bg);
+    border-left: 3px solid var(--dt-border);
+}
+
+.dualtier-side:first-child {
+    border-left-color: var(--dt-orange);
+}
+
+.dualtier-side:last-child {
+    border-left-color: var(--dt-red);
+}
+
+.dualtier-side strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--dt-ink-soft);
+}
+
+.dualtier-side p {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.55;
+    color: var(--dt-ink);
+    word-break: break-word;
+}
+
+/* ── Disclosure box (student-facing notice) ──────────────────── */
+
+.plagiarism-dualtier-disclosure {
+    background-color: var(--dt-indigo-bg);
+    border: 1px solid rgba(79, 70, 229, 0.18);
+    color: #3730a3;
+    border-radius: var(--dt-radius-sm);
+    font-family: var(--dt-font);
+    font-size: 0.9em;
+    line-height: 1.5;
+    padding: 12px 16px !important;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 560px) {
+    .dualtier-hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .dualtier-comparison {
+        flex-direction: column;
+    }
+}
