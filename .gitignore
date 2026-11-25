@@ -67,3 +67,8 @@ source.txt
 v2_*.txt
 verify_detector*.py
 
+
+# Evaluation outputs and reports (kept locally and on Drive, not in the repo)
+evaluation/reports/
+evaluation/figures/
+evaluation/results.csv

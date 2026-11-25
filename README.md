@@ -89,8 +89,7 @@ The system uses a tiered escalation pipeline:
 ├── evaluation/               # Benchmark experiments, datasets, and baselines
 │   ├── baselines/            # Cloud-only, local-only, and hybrid baselines
 │   ├── dataset/              # Dataset generator, paraphraser, splits
-│   ├── experiments/          # Empirical threshold sweeps and accuracy tests
-│   └── reports/              # Benchmark analysis reports
+│   └── experiments/          # Empirical threshold sweeps and accuracy tests
 ├── docker-compose.yml        # Multi-service production deployment
 ├── docker-compose.dev.yml    # Development deployment configuration
 ├── moodle-nginx.conf         # Reverse proxy configuration
