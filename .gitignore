@@ -54,3 +54,16 @@ htmlcov/
 # Model cache
 .cache/
 models/
+# ...but the SQLAlchemy models package is source code, not a model cache
+!backend/app/models/
+
+# Documentation, internal plans, thesis drafts, and screenshots
+docs/
+
+# Scratch & temporary smoke verification files
+clean.txt
+copy.txt
+source.txt
+v2_*.txt
+verify_detector*.py
+
