@@ -191,6 +191,11 @@ class FAISSIndex:
             return 0
         return self._index.ntotal
 
+    def has_document(self, doc_id: str) -> bool:
+        """True if doc_id, or its chunk fan-out, is already indexed."""
+        with self._lock:
+            return doc_id in self._doc_map or f"{doc_id}__chunk_0" in self._doc_map
+
     def add(self, doc_id: str, vector: np.ndarray) -> None:
         """Add a single normalized vector to the index.
 

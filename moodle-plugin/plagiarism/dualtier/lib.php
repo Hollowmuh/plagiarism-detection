@@ -84,14 +84,19 @@ class plagiarism_plugin_dualtier extends plagiarism_plugin {
             $tier = $record->tier_resolved ? " ({$record->tier_resolved})" : '';
             $text = "{$score}%{$tier}";
 
-            $reporturl = new moodle_url('/plagiarism/dualtier/report.php', [
-                'id' => $record->id,
-                'cmid' => $cmid,
-            ]);
+            // Only link to the report for users allowed to open it; students
+            // see the same badge as plain text instead of an error page.
+            $reporturl = null;
+            if (has_capability('plagiarism/dualtier:viewreport', context_module::instance($cmid))) {
+                $reporturl = new moodle_url('/plagiarism/dualtier/report.php', [
+                    'id' => $record->id,
+                    'cmid' => $cmid,
+                ]);
+            }
 
-            $html = html_writer::link($reporturl, $text, [
+            $html = self::render_badge($reporturl, $text, [
                 'class' => 'plagiarism-dualtier-badge ' . $class,
-                'title' => get_string('viewreport', 'plagiarism_dualtier'),
+                'title' => $reporturl ? get_string('viewreport', 'plagiarism_dualtier') : '',
             ]);
 
             $html .= self::get_ai_badge($record, $reporturl);
@@ -111,10 +116,10 @@ class plagiarism_plugin_dualtier extends plagiarism_plugin {
      * advisory-only (false-positive/ESL-bias caveats).
      *
      * @param object $record The plagiarism_dualtier_files record (with reportdata).
-     * @param moodle_url $reporturl Link target (same report page).
+     * @param moodle_url|null $reporturl Link target (same report page), or null.
      * @return string HTML, or '' if no AI detection data is available yet.
      */
-    private static function get_ai_badge($record, moodle_url $reporturl): string {
+    private static function get_ai_badge($record, ?moodle_url $reporturl): string {
         if (empty($record->reportdata)) {
             return '';
         }
@@ -133,10 +138,22 @@ class plagiarism_plugin_dualtier extends plagiarism_plugin {
             'likely_ai' => 'dualtier-ai-likely',
         ][$ai->verdict] ?? 'dualtier-ai-uncertain';
 
-        return html_writer::link($reporturl, "AI: {$aiscore}%", [
+        return self::render_badge($reporturl, "AI: {$aiscore}%", [
             'class' => 'plagiarism-dualtier-badge dualtier-ai-badge ' . $verdictclass,
             'title' => get_string('ai_badge_title', 'plagiarism_dualtier'),
         ]);
+    }
+
+    /**
+     * A badge that links to the report when a URL is given, else plain text.
+     *
+     * @param moodle_url|null $url
+     * @param string $text
+     * @param array $attributes
+     * @return string HTML
+     */
+    private static function render_badge(?moodle_url $url, string $text, array $attributes): string {
+        return $url ? html_writer::link($url, $text, $attributes) : html_writer::tag('span', $text, $attributes);
     }
 
     /**

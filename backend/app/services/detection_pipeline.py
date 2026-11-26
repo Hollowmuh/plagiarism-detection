@@ -6,6 +6,8 @@ Coordinates: extract → tier1 → gate → tier2 (if escalated) → store resul
 
 from __future__ import annotations
 
+from collections.abc import Iterable
+
 from app.config import settings
 from app.services.bm25_service import BM25Index
 from app.services.faiss_service import FAISSIndex
@@ -197,6 +199,38 @@ def run_detection(doc_id: str, text: str) -> PipelineResult:
         )
 
     return result
+
+
+def restore_indices(documents: Iterable[tuple[str, str]]) -> dict:
+    """Repopulate the detection indices from already-processed documents.
+
+    Winnowing and BM25 exist only in process memory, and FAISS is persisted
+    only every ~100 vectors, so without this a restarted worker cannot match
+    new submissions against earlier ones. The database holds the text, so it
+    is the source of truth. Pass only documents whose detection has completed,
+    otherwise a document still awaiting detection would match itself.
+    """
+    fp_index = get_fingerprint_index()
+    bm25_index = get_bm25_index()
+    faiss_idx = get_faiss_index()
+    tier2 = get_tier2_detector()
+
+    restored = 0
+    vectors_added = 0
+    for doc_id, text in documents:
+        if not text or not text.strip():
+            continue
+        fp_index.submit(doc_id, text)
+        bm25_index.add_document(doc_id, text)
+        if not faiss_idx.has_document(doc_id):
+            vectors_added += tier2.index_chunks(doc_id, text)
+        restored += 1
+
+    if vectors_added:
+        faiss_idx.save()
+
+    log.info("indices_restored", documents=restored, faiss_vectors_added=vectors_added)
+    return {"documents": restored, "faiss_vectors_added": vectors_added}
 
 
 def index_document(doc_id: str, text: str) -> None:

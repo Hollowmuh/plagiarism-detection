@@ -65,8 +65,34 @@ import app.tasks.purge_tasks  # noqa: F401, E402
 from celery.signals import worker_ready  # noqa: E402
 
 
+def _restore_detection_indices() -> None:
+    """Rebuild the detection indices from completed submissions in the database."""
+    from sqlalchemy import select
+
+    from app.db.sync_session import get_sync_session
+    from app.models.document import Document
+    from app.models.submission import Submission, SubmissionStatus
+    from app.services.detection_pipeline import restore_indices
+
+    session = get_sync_session()
+    try:
+        rows = session.execute(
+            select(Document.id, Document.extracted_text)
+            .join(Submission, Document.submission_id == Submission.id)
+            .where(
+                Submission.status == SubmissionStatus.COMPLETED,
+                Document.extracted_text.is_not(None),
+            )
+            .order_by(Document.created_at)
+        ).all()
+    finally:
+        session.close()
+
+    restore_indices((str(doc_id), text) for doc_id, text in rows)
+
+
 @worker_ready.connect
-def _preload_detection_services(**kwargs):
+def _preload_detection_services(sender=None, **kwargs):
     from app.core.logging import get_logger
     log = get_logger("worker_init")
     log.info("preloading_detection_services")
@@ -93,6 +119,11 @@ def _preload_detection_services(**kwargs):
         if settings.AI_DETECTOR_ENABLED:
             from app.services.ai_detector import _get_model as _get_ai_model
             _get_ai_model()
+
+        # Only the worker that owns the indices (it consumes the "indexing"
+        # queue) restores them. Runs before the solo pool takes any task.
+        if sender is not None and "indexing" in sender.app.amqp.queues.consume_from:
+            _restore_detection_indices()
 
         log.info("detection_services_preloaded")
     except Exception as exc:

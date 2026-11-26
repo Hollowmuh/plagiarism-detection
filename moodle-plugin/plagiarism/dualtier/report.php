@@ -146,6 +146,12 @@ if (!empty($record->reportdata)) {
                         echo html_writer::end_div();
                         echo html_writer::end_div();
                     }
+                } else {
+                    // Tier 1 matches on fingerprints, which keep no text
+                    // offsets, so there is no passage to show.
+                    echo html_writer::tag('p', get_string(
+                        $match->match_type === 'tier1' ? 'report_no_passage_tier1' : 'report_no_passage',
+                        'plagiarism_dualtier'));
                 }
 
                 echo html_writer::end_div(); // match
